@@ -247,7 +247,7 @@ RansacStats estimate_relative_pose_3pt_upright(const std::vector<Point2D> &point
     ransac_opt_scaled.max_epipolar_error =
         ransac_opt.max_epipolar_error * 0.5 * (1.0 / camera1.focal() + 1.0 / camera2.focal());
 
-    RansacStats stats = ransac_relpose(x1_calib, x2_calib, ransac_opt_scaled, pose, inliers);
+    RansacStats stats = ransac_relpose_3pt_upright(x1_calib, x2_calib, ransac_opt_scaled, pose, inliers);
 
     if (stats.num_inliers > 5) {
         // Collect inlier for additional bundle adjustment
