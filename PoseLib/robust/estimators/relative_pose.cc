@@ -98,8 +98,10 @@ void RelativePoseEstimatorUpright3Point::refine_model(CameraPose *pose) const {
 
     // Find approximate inliers and bundle over these with a truncated loss
     std::vector<char> inliers;
-    // @visn:TODO find out realtion b/w threshold and num samples
-    int num_inl = get_inliers(*pose, x1, x2, 5 * (opt.max_epipolar_error * opt.max_epipolar_error), &inliers);
+    // @visn:param - multiplying 3 here since `compute_sampson_msac_score`'s 
+    // return value is summation of scores over the number of samples 
+    // (not average)
+    int num_inl = get_inliers(*pose, x1, x2, 3 * (opt.max_epipolar_error * opt.max_epipolar_error), &inliers);
     std::vector<Eigen::Vector2d> x1_inlier, x2_inlier;
     x1_inlier.reserve(num_inl);
     x2_inlier.reserve(num_inl);
