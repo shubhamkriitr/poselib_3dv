@@ -249,7 +249,7 @@ RansacStats estimate_relative_pose_3pt_upright(const std::vector<Point2D> &point
 
     RansacStats stats = ransac_relpose_3pt_upright(x1_calib, x2_calib, ransac_opt_scaled, pose, inliers);
 
-    if (stats.num_inliers > 5) {
+    if (stats.num_inliers > 3) { // @visn:param changed 5 to 3
         // Collect inlier for additional bundle adjustment
         // TODO: use camera models for this refinement!
         std::vector<Point2D> x1_inliers;

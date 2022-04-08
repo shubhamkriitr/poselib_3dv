@@ -80,7 +80,7 @@ class RelativePoseEstimatorUpright3Point {
     double score_model(const CameraPose &pose, size_t *inlier_count) const;
     void refine_model(CameraPose *pose) const;
 
-    const size_t sample_sz = 5;
+    const size_t sample_sz = 3; // @visn:param changed from 5 to 3
     const size_t num_data;
 
   private:

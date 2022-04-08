@@ -33,6 +33,8 @@
 #include "PoseLib/solvers/gen_relpose_5p1pt.h"
 #include "PoseLib/solvers/relpose_5pt.h"
 #include "PoseLib/solvers/relpose_7pt.h"
+#include "PoseLib/solvers/relpose_upright_3pt.h"
+// @visn: importing relpose_upright_3pt
 
 namespace poselib {
 
@@ -81,7 +83,7 @@ void RelativePoseEstimatorUpright3Point::generate_models(std::vector<CameraPose>
         x1s[k] = x1[sample[k]].homogeneous().normalized();
         x2s[k] = x2[sample[k]].homogeneous().normalized();
     }
-    relpose_5pt(x1s, x2s, models);
+    relpose_upright_3pt(x1s, x2s, models); // @visn: calling 3pt solver 
 }
 
 double RelativePoseEstimatorUpright3Point::score_model(const CameraPose &pose, size_t *inlier_count) const {
@@ -96,12 +98,13 @@ void RelativePoseEstimatorUpright3Point::refine_model(CameraPose *pose) const {
 
     // Find approximate inliers and bundle over these with a truncated loss
     std::vector<char> inliers;
+    // @visn:TODO find out realtion b/w threshold and num samples
     int num_inl = get_inliers(*pose, x1, x2, 5 * (opt.max_epipolar_error * opt.max_epipolar_error), &inliers);
     std::vector<Eigen::Vector2d> x1_inlier, x2_inlier;
     x1_inlier.reserve(num_inl);
     x2_inlier.reserve(num_inl);
 
-    if (num_inl <= 5) {
+    if (num_inl <= 3) { // @visn:param changed from 5 to 3
         return;
     }
 
